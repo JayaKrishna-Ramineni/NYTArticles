@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">NYT News</string>
+
+    <string name="menu_view">Viewed Section</string>
+    <string name="menu_email">Emailed Section</string>
+    <string name="menu_shared">Shared Section</string>
+    <string name="view">Viewed</string>
+    <string name="email">Emailed</string>
+    <string name="shared">Shared</string>
+    <string name="tryAgain">Retry</string>
+    <string name="noData">No data to show</string>
+
+    <string name="parseError">Unable to parse data</string>
+    <string name="fetchError">Unable to reach server</string>
+
+    <string name="action_settings1">1(One) Day</string>
+    <string name="action_settings2">7(Seven) Days</string>
+    <string name="action_settings3">30(Thirty) Days</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+</resources>
