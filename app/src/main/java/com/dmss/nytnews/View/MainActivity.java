@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dmss.nytnews.Model.Adapters.ArticlesListAdapter;
 import com.dmss.nytnews.Model.Common;
 import com.dmss.nytnews.Model.Pojo.NewsModel;
+import com.dmss.nytnews.Model.TransparentProgressDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import android.os.Bundle;
@@ -34,12 +35,16 @@ public class MainActivity extends AppCompatActivity
 
     Controller controller;
     int selectedSection = Common.VIEWED_SECTION, selectedDuration = Common.DURATION_ONE;
+    int selectedId,selectedDurationId;
 
     ArrayList<NewsModel> newsModels = new ArrayList<>();
     ArticlesListAdapter articlesListAdapter;
     RecyclerView articlesRecyclerView;
     TextView noDataTextView;
     Button retryButton;
+
+
+    TransparentProgressDialog dialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +64,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void initializeUI() {
+        dialog = new TransparentProgressDialog(MainActivity.this, R.drawable.ic_loading);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         articlesRecyclerView = (RecyclerView) findViewById(R.id.articlesRecyclerView);
+        articlesRecyclerView.setHasFixedSize(true);
         articlesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         noDataTextView = (TextView) findViewById(R.id.noDataTextView);
         retryButton = (Button) findViewById(R.id.retryButton);
@@ -72,11 +81,18 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        navigationView.setCheckedItem(R.id.nav_view);
+        selectedId = R.id.nav_view;
+        selectedDurationId = R.id.action_one_day;
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     public void callApi() {
         UpdateHeading();
+
+        articlesRecyclerView.setVisibility(View.GONE);
+        dialog.show();
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -115,19 +131,22 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        switch (id) {
-            case R.id.action_one_day:
-                selectedDuration = Common.DURATION_ONE;
-                callApi();
-                return true;
-            case R.id.action_seven_days:
-                selectedDuration = Common.DURATION_SEVEN;
-                callApi();
-                return true;
-            case R.id.action_thirty_days:
-                selectedDuration = Common.DURATION_THIRTY;
-                callApi();
-                return true;
+        if(selectedDurationId != id){
+            selectedDurationId = id;
+            switch (id) {
+                case R.id.action_one_day:
+                    selectedDuration = Common.DURATION_ONE;
+                    callApi();
+                    return true;
+                case R.id.action_seven_days:
+                    selectedDuration = Common.DURATION_SEVEN;
+                    callApi();
+                    return true;
+                case R.id.action_thirty_days:
+                    selectedDuration = Common.DURATION_THIRTY;
+                    callApi();
+                    return true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -136,15 +155,18 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         // Handle navigation view item clicks here.
         int id = menuItem.getItemId();
-
-        if (id == R.id.nav_view) {
-            selectedSection = Common.VIEWED_SECTION;
-        } else if (id == R.id.nav_email) {
-            selectedSection = Common.EMAILED_SECTION;
-        } else if (id == R.id.nav_share) {
-            selectedSection = Common.SHARED_SECTION;
+        if (selectedId != id) {
+            selectedId = id;
+            if (id == R.id.nav_view) {
+                selectedSection = Common.VIEWED_SECTION;
+            } else if (id == R.id.nav_email) {
+                selectedSection = Common.EMAILED_SECTION;
+            } else if (id == R.id.nav_share) {
+                selectedSection = Common.SHARED_SECTION;
+            }
+            callApi();
         }
-        callApi();
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -179,8 +201,9 @@ public class MainActivity extends AppCompatActivity
                     retryButton.setVisibility(View.GONE);
                     noDataTextView.setVisibility(View.GONE);
                     articlesRecyclerView.setVisibility(View.VISIBLE);
-                    articlesListAdapter = new ArticlesListAdapter(newsModels,MainActivity.this,MainActivity.this);
+                    articlesListAdapter = new ArticlesListAdapter(newsModels, MainActivity.this, MainActivity.this);
                     articlesRecyclerView.setAdapter(articlesListAdapter);
+                    dialog.cancel();
                 }
             }
         });
@@ -195,6 +218,8 @@ public class MainActivity extends AppCompatActivity
         noDataTextView.setText(error);
         noDataTextView.setVisibility(View.VISIBLE);
         articlesRecyclerView.setVisibility(View.GONE);
+
+        dialog.cancel();
     }
 
     @Override
@@ -204,6 +229,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        filter(newText);
         return false;
     }
 
@@ -219,5 +245,23 @@ public class MainActivity extends AppCompatActivity
                 getSupportActionBar().setTitle(getString(R.string.app_name) + " - " + getString(R.string.shared));
                 break;
         }
+    }
+
+    private void filter(String text) {
+        //new array list that will hold the filtered data
+        ArrayList<NewsModel> filteredModels = new ArrayList<>();
+
+        //looping through existing elements
+        for (NewsModel news : newsModels) {
+            //if the existing elements contains the search input
+            if (news.getTitle().toLowerCase().contains(text.toLowerCase()) ||
+                    news.getByline().toLowerCase().contains(text.toLowerCase())) {
+                //adding the element to filtered list
+                filteredModels.add(news);
+            }
+        }
+
+        //calling a method of the adapter class and passing the filtered list
+        articlesListAdapter.filterList(filteredModels);
     }
 }

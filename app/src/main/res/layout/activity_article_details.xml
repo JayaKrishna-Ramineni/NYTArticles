@@ -2,15 +2,120 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     >
+    <TextView
+        android:id="@+id/articleDateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:maxLines="2"
+        android:layout_gravity="end"
+        android:drawableLeft="@drawable/ic_calendar"
+        android:text="Article Date"
+        android:textSize="14sp"
+        android:drawablePadding="5dp"
+        android:textAlignment="viewEnd"
+        android:typeface="normal" />
     <TextView
         android:id="@+id/articleHeadingTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:textStyle="normal"
-        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textSize="18sp"
         android:ellipsize="end"
         android:textColor="@android:color/black"
+        android:text="Article Title"/>
+
+
+    <TextView
+        android:id="@+id/articleByTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textStyle="normal"
+        android:textSize="15sp"
+        android:ellipsize="end"
+        android:text="Article Title"/>
+
+    <TextView
+        android:id="@+id/articleAbstractHeadTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:ellipsize="end"
+        android:textColor="@android:color/black"
+        android:text="Article Title"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@android:color/black"
+        android:alpha="0.3"/>
+    <TextView
+        android:id="@+id/articleAbstractTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textStyle="normal"
+        android:textSize="15sp"
+        android:ellipsize="end"
+        android:text="Article Title"/>
+
+    <TextView
+        android:id="@+id/articleWebHeadTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:ellipsize="end"
+        android:textColor="@android:color/black"
+        android:text="Article Title"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:alpha="0.3"/>
+    <TextView
+        android:id="@+id/articleWebLinkTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textStyle="normal"
+        android:textSize="15sp"
+        android:ellipsize="end"
+        android:autoLink="web"
+        android:text="Article Title"/>
+
+    <TextView
+        android:id="@+id/articleSourceHeadTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:ellipsize="end"
+        android:textColor="@android:color/black"
+        android:text="Article Title"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:alpha="0.3"/>
+    <TextView
+        android:id="@+id/articleSourceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textStyle="normal"
+        android:textSize="15sp"
+        android:ellipsize="end"
         android:text="Article Title"/>
 </LinearLayout>

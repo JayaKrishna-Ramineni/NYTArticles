@@ -61,4 +61,9 @@ ActivityOptionsCompat.makeSceneTransitionAnimation(activity,(View)holder.titleTe
     public int getItemCount() {
         return newsModels.size();
     }
+
+    public void filterList(ArrayList<NewsModel> filteredModels) {
+        this.newsModels = filteredModels;
+        notifyDataSetChanged();
+    }
 }
