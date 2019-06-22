@@ -1,4 +1,4 @@
-# Foobar
+# NYT News
 
 Sample demonstrating the third party api calling and displaying the data in a RecyclerView to layout elements with a
 LinearLayoutManager. It also demonstrates the material app bar with menus and search layout . Is demonstrates the navigation drawer layout with single selection as well.
